@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            font-family: monospace;
+            background-clip: #f0f0f0;
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+
+    <script src="three.min.js"></script>
+
+
+</head>
+
+<body>
+    <script>
+        var container, camera, scene, renderer;
+        var cube;
+
+
+        //drawCube();
+
+
+        function drawCube() {
+            // create the container
+            container = document.createElement("div");
+            document.body.appendChild(container);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.y = 150;
+            camera.position.z = 500;
+
+            // Scene
+
+            scene = new THREE.Scene();
+
+            // Cube 
+            var geometry = new THREE.CubeGeometry(200, 200, 200);
+            var material = new THREE.MeshBasicMaterial({
+                vertexColors: THREE.FaceColors
+            });
+            cube = new THREE.Mesh(geometry, material);
+            cube.position.y = 150;
+            scene.add(cube);
+            for (var i = 0; i < geometry.faces.length; i++) {
+                geometry.faces[i].color.setHex(Math.random() * 0xffffff);
+            }
+
+            // render
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            container.appendChild(renderer.domElement);
+
+            cube.rotation.y = 2.0;
+            animateCube();
+
+            var render = function() {
+                requestAnimationFrame(render);
+                animateCube();
+                renderer.render(scene, camera);
+            }
+
+            render();
+
+        }
+
+        function animateCube() {
+            cube.rotation.x += 0.001;
+            cube.rotation.y += 0.001;
+        }
+
+        drawLines();
+
+        function drawLines() {
+
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 500);
+            camera.position.set(0, 0, 100);
+
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+            var scene = new THREE.Scene();
+
+            var material = new THREE.LineBasicMaterial({
+                color: "green"
+            });
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
+            geometry.vertices.push(new THREE.Vector3(0, 10, 0));
+            geometry.vertices.push(new THREE.Vector3(10, 0, 0));
+
+            var line = new THREE.Line(geometry, material);
+
+            scene.add(line);
+            renderer.render(scene, camera);
+
+
+        }
+    </script>
+</body>
+
+</html>

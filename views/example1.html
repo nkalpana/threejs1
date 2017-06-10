@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Example1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+        
+        canvas {
+            background: red;
+        }
+    </style>
+
+</head>
+
+<body>
+    <canvas id="mycanvas"></canvas>
+    <script src="three.min.js"></script>
+    <script>
+        var renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById("mycanvas"),
+            antialias: true
+        });
+        renderer.setClearColor(0x00ff00);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
+
+        var scene = new THREE.Scene();
+
+        var light = new THREE.AmbientLight(0x00ff00, 0.5);
+        scene.add(light);
+
+        var pointLight = new THREE.PointLight(0x00ff00, 0.5);
+        scene.add(pointLight);
+
+
+        var geometry = new THREE.BoxGeometry(100, 100, 100);
+        var meshMaterial = new THREE.MeshLambertMaterial({
+            color: 0xFF4590
+        });
+        var mesh = new THREE.Mesh(geometry, meshMaterial);
+        mesh.position.set(0, 0, -1000);
+
+        scene.add(mesh);
+
+        var render = function() {
+            mesh.rotation.x += 0.01;
+            mesh.rotation.y += 0.01;
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+    </script>
+</body>
+
+</html>
